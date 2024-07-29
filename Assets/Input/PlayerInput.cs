@@ -30,7 +30,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Walking"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""4af429a8-91af-49b4-9d47-87e940815225"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -56,7 +56,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Crounching"",
+                    ""name"": ""Crouching"",
                     ""type"": ""Button"",
                     ""id"": ""f26b1a92-5c19-413d-99e8-8d3a956dfd1b"",
                     ""expectedControlType"": """",
@@ -81,15 +81,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Jumping"",
-                    ""type"": ""Button"",
-                    ""id"": ""b588b846-b764-4fbf-af1a-9a0e3910cfa9"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -163,7 +154,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b060bf27-8697-4944-ae2c-9c82bdb51a4c"",
                     ""path"": ""<Keyboard>/shift"",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Running"",
@@ -183,19 +174,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""25132029-4c16-40db-b541-1a257fd51664"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Crounching"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""495ef6c7-bcf6-4ff3-bb48-e510235053cd"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -227,12 +207,12 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b323da22-2ae2-44b0-a95b-b8cfce89d7f7"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""ea31ab2d-0571-4535-b92f-04d38e02f40d"",
+                    ""path"": ""<Keyboard>/c"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jumping"",
+                    ""action"": ""Crouching"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -246,10 +226,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_OnGround_Walking = m_OnGround.FindAction("Walking", throwIfNotFound: true);
         m_OnGround_Running = m_OnGround.FindAction("Running", throwIfNotFound: true);
         m_OnGround_Dashing = m_OnGround.FindAction("Dashing", throwIfNotFound: true);
-        m_OnGround_Crounching = m_OnGround.FindAction("Crounching", throwIfNotFound: true);
+        m_OnGround_Crouching = m_OnGround.FindAction("Crouching", throwIfNotFound: true);
         m_OnGround_Interacting = m_OnGround.FindAction("Interacting", throwIfNotFound: true);
         m_OnGround_Looking = m_OnGround.FindAction("Looking", throwIfNotFound: true);
-        m_OnGround_Jumping = m_OnGround.FindAction("Jumping", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -319,10 +298,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_OnGround_Walking;
     private readonly InputAction m_OnGround_Running;
     private readonly InputAction m_OnGround_Dashing;
-    private readonly InputAction m_OnGround_Crounching;
+    private readonly InputAction m_OnGround_Crouching;
     private readonly InputAction m_OnGround_Interacting;
     private readonly InputAction m_OnGround_Looking;
-    private readonly InputAction m_OnGround_Jumping;
     public struct OnGroundActions
     {
         private @PlayerInput m_Wrapper;
@@ -330,10 +308,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Walking => m_Wrapper.m_OnGround_Walking;
         public InputAction @Running => m_Wrapper.m_OnGround_Running;
         public InputAction @Dashing => m_Wrapper.m_OnGround_Dashing;
-        public InputAction @Crounching => m_Wrapper.m_OnGround_Crounching;
+        public InputAction @Crouching => m_Wrapper.m_OnGround_Crouching;
         public InputAction @Interacting => m_Wrapper.m_OnGround_Interacting;
         public InputAction @Looking => m_Wrapper.m_OnGround_Looking;
-        public InputAction @Jumping => m_Wrapper.m_OnGround_Jumping;
         public InputActionMap Get() { return m_Wrapper.m_OnGround; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -352,18 +329,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dashing.started += instance.OnDashing;
             @Dashing.performed += instance.OnDashing;
             @Dashing.canceled += instance.OnDashing;
-            @Crounching.started += instance.OnCrounching;
-            @Crounching.performed += instance.OnCrounching;
-            @Crounching.canceled += instance.OnCrounching;
+            @Crouching.started += instance.OnCrouching;
+            @Crouching.performed += instance.OnCrouching;
+            @Crouching.canceled += instance.OnCrouching;
             @Interacting.started += instance.OnInteracting;
             @Interacting.performed += instance.OnInteracting;
             @Interacting.canceled += instance.OnInteracting;
             @Looking.started += instance.OnLooking;
             @Looking.performed += instance.OnLooking;
             @Looking.canceled += instance.OnLooking;
-            @Jumping.started += instance.OnJumping;
-            @Jumping.performed += instance.OnJumping;
-            @Jumping.canceled += instance.OnJumping;
         }
 
         private void UnregisterCallbacks(IOnGroundActions instance)
@@ -377,18 +351,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Dashing.started -= instance.OnDashing;
             @Dashing.performed -= instance.OnDashing;
             @Dashing.canceled -= instance.OnDashing;
-            @Crounching.started -= instance.OnCrounching;
-            @Crounching.performed -= instance.OnCrounching;
-            @Crounching.canceled -= instance.OnCrounching;
+            @Crouching.started -= instance.OnCrouching;
+            @Crouching.performed -= instance.OnCrouching;
+            @Crouching.canceled -= instance.OnCrouching;
             @Interacting.started -= instance.OnInteracting;
             @Interacting.performed -= instance.OnInteracting;
             @Interacting.canceled -= instance.OnInteracting;
             @Looking.started -= instance.OnLooking;
             @Looking.performed -= instance.OnLooking;
             @Looking.canceled -= instance.OnLooking;
-            @Jumping.started -= instance.OnJumping;
-            @Jumping.performed -= instance.OnJumping;
-            @Jumping.canceled -= instance.OnJumping;
         }
 
         public void RemoveCallbacks(IOnGroundActions instance)
@@ -411,9 +382,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnWalking(InputAction.CallbackContext context);
         void OnRunning(InputAction.CallbackContext context);
         void OnDashing(InputAction.CallbackContext context);
-        void OnCrounching(InputAction.CallbackContext context);
+        void OnCrouching(InputAction.CallbackContext context);
         void OnInteracting(InputAction.CallbackContext context);
         void OnLooking(InputAction.CallbackContext context);
-        void OnJumping(InputAction.CallbackContext context);
     }
 }

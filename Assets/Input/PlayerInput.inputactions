@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Walking",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "4af429a8-91af-49b4-9d47-87e940815225",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Crounching",
+                    "name": "Crouching",
                     "type": "Button",
                     "id": "f26b1a92-5c19-413d-99e8-8d3a956dfd1b",
                     "expectedControlType": "",
@@ -58,15 +58,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Jumping",
-                    "type": "Button",
-                    "id": "b588b846-b764-4fbf-af1a-9a0e3910cfa9",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -140,7 +131,7 @@
                     "name": "",
                     "id": "b060bf27-8697-4944-ae2c-9c82bdb51a4c",
                     "path": "<Keyboard>/shift",
-                    "interactions": "Hold",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Running",
@@ -160,19 +151,8 @@
                 },
                 {
                     "name": "",
-                    "id": "25132029-4c16-40db-b541-1a257fd51664",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Crounching",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "495ef6c7-bcf6-4ff3-bb48-e510235053cd",
-                    "path": "",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -204,12 +184,12 @@
                 },
                 {
                     "name": "",
-                    "id": "b323da22-2ae2-44b0-a95b-b8cfce89d7f7",
-                    "path": "<Keyboard>/space",
+                    "id": "ea31ab2d-0571-4535-b92f-04d38e02f40d",
+                    "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jumping",
+                    "action": "Crouching",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
