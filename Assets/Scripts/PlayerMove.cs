@@ -1,16 +1,21 @@
 using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
+//move
 public class PlayerMove : MonoBehaviour
 { //create var
     private CharacterController controller;
     private Vector3 playerFall;
+    private Vector3 moveDirection;
     private bool isGrounded;
     private float gravity = -50f;
     private float speed = 4.0f;
     [Header("DashSetting")]
-    [SerializeField] private float dashspeed = 15f;
-    [SerializeField] private float dashDuration = 1f;
+    [SerializeField] private float dashspeed = 12f;
+    [SerializeField] private float dashDuration = 0.25f;
     private Vector3 velocity;
     private bool lerpCrounch;
     private bool crouching;
@@ -42,14 +47,10 @@ public class PlayerMove : MonoBehaviour
                 crouchTimer = 0f;
             }
         }
-        
-
-
-
     }
     public void ProcessMove(Vector2 input)
     {
-        Vector3 moveDirection = Vector3.zero; // create a blank vector 3
+        moveDirection = Vector3.zero; // create a blank vector 3
         moveDirection.x = input.x;   //assign value from input
         moveDirection.z = input.y;
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
@@ -59,13 +60,21 @@ public class PlayerMove : MonoBehaviour
             playerFall.y = -2f;  //reset player gravity when on ground
         controller.Move(playerFall * Time.deltaTime); //make player fall based on velocity
     }
-    public IEnumerator Dash() // this used to be jumping but i deemed it uncessesary for this game
+    public void OnDash()
+    {
+        StartCoroutine(Dash());
+    }
+    private IEnumerator Dash() // this used to be jumping but i deemed it uncessesary for this game
     {
         if (isGrounded)
         {
-            velocity = new Vector3(transform.forward.x * dashspeed, 0f, transform.forward.z * dashspeed);
-            yield return new WaitForSeconds(dashDuration);
-            velocity = Vector3.zero;
+            float startTime = Time.time;
+            while (Time.time < startTime + dashDuration)
+            {
+                controller.Move(transform.TransformDirection(moveDirection) * dashspeed * Time.deltaTime);
+
+                yield return null;
+            }
         }
     }
     public void Crouch()
@@ -88,6 +97,6 @@ public class PlayerMove : MonoBehaviour
             crouching = false;
         }
         running = !running;
-        speed = running ? 8f : 4f;  //if running = true, speed =8 and =4 otherwise
+        speed = running ? 6f : 4f;  //if running = true, speed =8 and =4 otherwise
     }
 }

@@ -10,16 +10,16 @@ public class InputManager : MonoBehaviour
 
     void Awake()
     {
-        // assign var
+        // assign var and call some method
         playerInput = new PlayerInput();
         onGround = playerInput.OnGround;
         move = GetComponent<PlayerMove>();
-        onGround.Dashing.performed += ctx => move.Dash();
         look = GetComponent<PlayerLook>();
+        onGround.Dashing.performed += ctx => move.OnDash();
         onGround.Crouching.performed += ctx => move.Crouch();
         onGround.Running.performed += ctx => move.Run();
     }
-    // Update is called once per frame
+    // call the processing method with input vector from the new input system
     void FixedUpdate()
     {
         move.ProcessMove(onGround.Walking.ReadValue<Vector2>());
@@ -36,8 +36,6 @@ public class InputManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        onGround.Running.performed -= ctx => move.Run();
-        onGround.Crouching.performed -= ctx => move.Crouch();
         onGround.Disable();
     }
 }
