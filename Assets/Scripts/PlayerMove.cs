@@ -21,6 +21,7 @@ public class PlayerMove : MonoBehaviour
     private bool crouching;
     private bool running;
     private float crouchTimer;
+    private bool isDashing = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,9 +51,12 @@ public class PlayerMove : MonoBehaviour
     }
     public void ProcessMove(Vector2 input)
     {
-        moveDirection = Vector3.zero; // create a blank vector 3
-        moveDirection.x = input.x;   //assign value from input
-        moveDirection.z = input.y;
+        if (isDashing == false)     //stop reading moving input when dashing
+        {
+            moveDirection = Vector3.zero; // create a blank vector 3
+            moveDirection.x = input.x;   //assign value from input
+            moveDirection.z = input.y;
+        }
         controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
         // Spliting x,z and y because the falling speed need to be independent of the movement speed
         playerFall.y += gravity * Time.deltaTime; //player velocity when falling
@@ -62,20 +66,22 @@ public class PlayerMove : MonoBehaviour
     }
     public void OnDash()
     {
-        StartCoroutine(Dash());
+        if (isGrounded)
+        {
+            StartCoroutine(Dash());
+        }
     }
     private IEnumerator Dash() // this used to be jumping but i deemed it uncessesary for this game
     {
-        if (isGrounded)
+        isDashing = true;
+        float startTime = Time.time;
+        while (Time.time < startTime + dashDuration)
         {
-            float startTime = Time.time;
-            while (Time.time < startTime + dashDuration)
-            {
-                controller.Move(transform.TransformDirection(moveDirection) * dashspeed * Time.deltaTime);
+            controller.Move(transform.TransformDirection(moveDirection) * dashspeed * Time.deltaTime);
 
-                yield return null;
-            }
+            yield return null;
         }
+        isDashing = false;
     }
     public void Crouch()
     {
